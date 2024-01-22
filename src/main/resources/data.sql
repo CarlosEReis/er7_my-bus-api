@@ -1,4 +1,4 @@
-CREATE SCHEMA IF NOT EXISTS `er7_mybus`;
+CREATE DATABASE IF NOT EXISTS `er7_mybus`;
 USE `er7_mybus`;
 
 DROP TABLE IF EXISTS `routes`;
