@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  app:
+    image: carloser7/er7_mybus-api
+    container_name: er7_mybus-api
+    ports:
+      - '8080:8080'
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - er7_mybus-net
+  db:
+    image: postgres:16
+    container_name: er7_mybus-db
+    ports:
+      - '5432:5432'
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_SCHEMA}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - er7_mybus-net
+volumes:
+  pgdata:
+    name: er7_mybus-api-pgdata
+networks:
+  er7_mybus-net:
+    driver: bridge
