@@ -12,6 +12,7 @@ services:
       - db
     networks:
       - er7_mybus-net
+    restart: unless-stopped
   db:
     image: postgres:16
     container_name: er7_mybus-db
@@ -27,6 +28,18 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - er7_mybus-net
+    restart: unless-stopped
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: er7_mybus-cloudflared
+    env_file:
+      - .env
+    command: tunnel --no-autoupdate run --token ${TUNEL_TOKEN}
+    networks:
+      - er7_mybus-net
+    restart: unless-stopped
+    depends_on:
+      - app
 volumes:
   pgdata:
     name: er7_mybus-api-pgdata
